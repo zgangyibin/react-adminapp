@@ -1,0 +1,43 @@
+.dashboard-content {
+    width: 100%;
+    .ant-statistic{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .ant-statistic-title{
+            font-size: large;
+        }
+        
+    }
+    .ant-col:first-child .ant-card .ant-card-body {
+        background: url(../../assets/01_index_03.jpg) no-repeat 100% 100%;
+    }
+    .ant-col:last-child .ant-card .ant-card-body {
+        background: url(../../assets/01_index_06.jpg) no-repeat 100% 100%;
+    }
+    .ant-col:nth-child(2) .ant-card .ant-card-body {
+        background: url(../../assets/01_index_09.jpg) no-repeat 100% 100%;
+    }
+    .anticon-user, .anticon-money-collect, .anticon-appstore{
+        display: inline-block;
+        width: 80px;
+        height: 80px;
+        line-height: 85px;
+        border-radius: 50%;
+        margin-right: 40px;
+        background-color: #173f6f;
+        color: #fff;
+        text-align: center;
+        font-size: 50px;
+    }
+    .anticon-money-collect {
+        background-color: #cf1322;
+    }
+    .anticon-appstore {
+        background-color: #3f8600;
+    }
+}
+.dashboard-echart {
+    width: 100%;
+}

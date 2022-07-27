@@ -1,0 +1,46 @@
+.loadingMask{
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0,0,0,0.2);
+  z-index: 999;
+  &>span{
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    font-size: 50px;
+    color: greenyellow;
+    animation: loadingAnimate 3s linear infinite;
+  }
+}
+.loadingMask:first-child{
+  display: block;
+}
+@keyframes loadingAnimate{
+  from {
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+@font-face {
+  font-family: "iconfont";
+  src: url("../../assets/font/iconfont.ttf") format("truetype");
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.icon-jiazai:before {
+  content: "\e684";
+}
+
