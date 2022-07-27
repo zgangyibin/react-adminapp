@@ -1,9 +1,8 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UploadOutlined,
   UserOutlined,
-  VideoCameraOutlined,
+  DatabaseOutlined,
   DownOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Avatar, Image, Dropdown, Space } from "antd";
@@ -67,8 +66,13 @@ const AppLayout = ({ user, dispatch }) => {
           items={[
             {
               key: "1",
+              icon: <DatabaseOutlined />,
+              label: <Link to={"/dashboard"}>数据汇总</Link>,
+            },
+            {
+              key: "2",
               icon: <UserOutlined />,
-              label: <Link to={"/dashboard"}>Dashboard</Link>,
+              label: <Link to={"/adminuser"}>管理员</Link>,
             },
           ]}
         />

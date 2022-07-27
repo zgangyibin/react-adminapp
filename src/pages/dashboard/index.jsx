@@ -4,36 +4,72 @@ import {
   AppstoreOutlined,
 } from "@ant-design/icons";
 import * as echarts from "echarts";
-import { Fragment, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Card, Col, Row, Statistic } from "antd";
+import { getDashboardData } from "../../api/otherService";
 import "./index.scss";
 import React from "react";
+import { formatDate } from "../../utils/tool";
+// Fragment不会渲染组件，只做jsx根组件使用
+
 function Dashboard() {
+  const [data, setData] = useState({});
+  const [echartData, setEchartData] = useState({});
   useEffect(() => {
+    getDashboardData(function (res) {
+      console.log(res);
+      const chartData = res.data[0].data;
+      var chartMap = {};
+      chartData.forEach(function (o) {
+        let date = formatDate(o.createtime, "YYYY-MM-DD");
+        if (!chartMap[date]) {
+          chartMap[date] = 1;
+        } else {
+          chartMap[date]++;
+        }
+      });
+      // console.log(chartMap);
+      setEchartData(chartMap); //echart数据
+      setData({
+        userCount: res.data[1].data[0].total,
+        money: res.data[2].data[0].total.toFixed(2),
+        proCount: res.data[3].data[0].total.toFixed(2),
+      });
+    });
+  }, []); //模拟mounted
+  useEffect(() => {
+    if (!echartData) return;
     // 基于准备好的dom，初始化echarts实例
     var myChart = echarts.init(document.getElementById("main"));
     // 绘制图表
     const option = {
       title: {
         text: "订单数量",
-        left: "50%",
+        left: "45%",
       },
       xAxis: {
         type: "category",
-        data: ["A", "B", "C"],
+        data: Object.keys(echartData),
       },
       yAxis: {
         type: "value",
       },
       series: [
         {
-          data: [120, 200, 150],
+          data: Object.keys(echartData).map((item) => echartData[item]),
           type: "line",
         },
       ],
+      label: {
+        show: true,
+        position: "bottom",
+        textStyle: {
+          fontSize: 20,
+        },
+      },
     };
     myChart.setOption(option);
-  }, []);
+  }, [echartData]); //echartData变化才触发
   return (
     <Fragment>
       <div className="dashboard-content">
@@ -42,7 +78,7 @@ function Dashboard() {
             <Card>
               <Statistic
                 title="注册人数"
-                value={11.28}
+                value={data.userCount}
                 precision={2}
                 valueStyle={{
                   color: "#173f6f",
@@ -56,7 +92,7 @@ function Dashboard() {
             <Card>
               <Statistic
                 title="总销售额"
-                value={9.3}
+                value={data.money}
                 precision={2}
                 valueStyle={{
                   color: "#cf1322",
@@ -70,7 +106,7 @@ function Dashboard() {
             <Card>
               <Statistic
                 title="在线商品"
-                value={9.3}
+                value={data.proCount}
                 precision={2}
                 valueStyle={{
                   color: "#3f8600",
@@ -82,7 +118,7 @@ function Dashboard() {
           </Col>
         </Row>
       </div>
-      <div id="main"></div>
+      <div id="main" className="dashboard-echart"></div>
     </Fragment>
   );
 }

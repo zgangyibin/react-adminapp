@@ -21,15 +21,15 @@
     }
     .anticon-user, .anticon-money-collect, .anticon-appstore{
         display: inline-block;
-        width: 80px;
-        height: 80px;
-        line-height: 85px;
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
         border-radius: 50%;
         margin-right: 40px;
         background-color: #173f6f;
         color: #fff;
         text-align: center;
-        font-size: 50px;
+        font-size: 30px;
     }
     .anticon-money-collect {
         background-color: #cf1322;
@@ -39,5 +39,8 @@
     }
 }
 .dashboard-echart {
-    width: 100%;
+    width: 85%;
+    height: 400px;
+    margin-top: 15px;
+ 
 }
