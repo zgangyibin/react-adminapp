@@ -3,6 +3,8 @@ import {
   MenuUnfoldOutlined,
   UserOutlined,
   DatabaseOutlined,
+  UsergroupAddOutlined,
+  FileProtectOutlined,
   DownOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Avatar, Image, Dropdown, Space } from "antd";
@@ -71,13 +73,18 @@ const AppLayout = ({ user, dispatch }) => {
             },
             {
               key: "2",
-              icon: <UserOutlined />,
+              icon: <UsergroupAddOutlined />,
               label: <Link to={"/adminuser"}>管理员</Link>,
             },
             {
               key: "3",
               icon: <UserOutlined />,
               label: <Link to={"/user"}>用户管理</Link>,
+            },
+            {
+              key: "4",
+              icon: <FileProtectOutlined />,
+              label: <Link to={"/product"}>商品管理</Link>,
             },
           ]}
         />

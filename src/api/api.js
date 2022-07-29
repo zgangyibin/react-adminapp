@@ -9,5 +9,6 @@ const api = {
   delAdminUser: `${url}/dapi/vapi/delAdminUser`, //删除管理员
   usersList: `${url}/dapi/vapi/usersList`, //用户列表
   showUserPwd: `${url}/dapi/vapi/showUserPwd`, //查看用户密码
+  getPro: `${url}/dapi/vapi/getPro`, //获取商品
 };
 export default api;
