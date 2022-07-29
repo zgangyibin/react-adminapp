@@ -74,6 +74,11 @@ const AppLayout = ({ user, dispatch }) => {
               icon: <UserOutlined />,
               label: <Link to={"/adminuser"}>管理员</Link>,
             },
+            {
+              key: "3",
+              icon: <UserOutlined />,
+              label: <Link to={"/user"}>用户管理</Link>,
+            },
           ]}
         />
       </Sider>

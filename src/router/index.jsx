@@ -3,6 +3,7 @@ import Login from "../pages/login";
 import AppLayout from "../pages/layout";
 import Dashboard from "../pages/dashboard";
 import AdminUser from "../pages/adminUser";
+import User from "../pages/user";
 
 function Router() {
   return (
@@ -12,6 +13,7 @@ function Router() {
         <Route path="/" element={<AppLayout />}>
           <Route path="/dashboard" element={<Dashboard />}></Route>
           <Route path="/adminuser" element={<AdminUser />}></Route>
+          <Route path="/user" element={<User />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
