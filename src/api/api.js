@@ -10,5 +10,13 @@ const api = {
   usersList: `${url}/dapi/vapi/usersList`, //用户列表
   showUserPwd: `${url}/dapi/vapi/showUserPwd`, //查看用户密码
   getPro: `${url}/dapi/vapi/getPro`, //获取商品
+  addPro: `${url}/dapi/vapi/addPro`, //添加商品
+  getAllProType: `${url}/dapi/vapi/getAllProType`, //获取商品分类
+  adddetailimg: `${url}/dapi/vapi/adddetailimg`, //上传文件
+  deldetailimg: `${url}/dapi/vapi/deldetailimg`, //删除文件
+  getDetail: `${url}/dapi/vapi/getDetail`, //获取商品详情
+  updatepro: `${url}/dapi/vapi/updatepro`, //更新商品
+  delPro: `${url}/dapi/vapi/delPro`, //删除商品
+  getOrderList: `${url}/dapi/vapi/getOrdersList`, //获取订单数据
 };
 export default api;

@@ -6,6 +6,7 @@ import {
   UsergroupAddOutlined,
   FileProtectOutlined,
   DownOutlined,
+  SketchOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Avatar, Image, Dropdown, Space } from "antd";
 import React, { useEffect, useState } from "react";
@@ -85,6 +86,11 @@ const AppLayout = ({ user, dispatch }) => {
               key: "4",
               icon: <FileProtectOutlined />,
               label: <Link to={"/product"}>商品管理</Link>,
+            },
+            {
+              key: "5",
+              icon: <SketchOutlined />,
+              label: <Link to={"/order"}>订单管理</Link>,
             },
           ]}
         />

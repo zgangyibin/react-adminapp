@@ -5,6 +5,7 @@ import Dashboard from "../pages/dashboard";
 import AdminUser from "../pages/adminUser";
 import User from "../pages/user";
 import Product from "../pages/product";
+import Order from "../pages/order";
 
 function Router() {
   return (
@@ -16,6 +17,7 @@ function Router() {
           <Route path="adminuser" element={<AdminUser />}></Route>
           <Route path="user" element={<User />}></Route>
           <Route path="product" element={<Product />}></Route>
+          <Route path="order" element={<Order />}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
