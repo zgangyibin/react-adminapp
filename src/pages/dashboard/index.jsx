@@ -14,8 +14,14 @@ import { formatDate } from "../../utils/tool";
 
 function Dashboard() {
   const [data, setData] = useState({});
-  const [echartData, setEchartData] = useState({});
+  const [echartData, setEchartData] = useState("");
+  const [myChart, setMyChart] = useState("");
   useEffect(() => {
+    if (!myChart) {
+      //需要判断myChart实例是否存在，如果不存在才初始化
+      // 基于准备好的dom，初始化echarts实例
+      setMyChart(echarts.init(document.getElementById("main")));
+    }
     getDashboardData(function (res) {
       console.log(res);
       const chartData = res.data[0].data;
@@ -39,8 +45,7 @@ function Dashboard() {
   }, []); //模拟mounted
   useEffect(() => {
     if (!echartData) return;
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById("main"));
+
     // 绘制图表
     const option = {
       title: {

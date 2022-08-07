@@ -1,17 +1,13 @@
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UserOutlined,
   DatabaseOutlined,
-  UsergroupAddOutlined,
-  FileProtectOutlined,
   DownOutlined,
-  SketchOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, Avatar, Image, Dropdown, Space } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import logo from "../../assets/logo.png";
 import "./index.scss"; //导入的样式是全局的
@@ -21,7 +17,15 @@ const { Header, Sider, Content } = Layout;
 
 const AppLayout = ({ user, dispatch }) => {
   const [collapsed, setCollapsed] = useState(false);
+  // console.log(user);
   const navigate = useNavigate();
+  const location = useLocation();
+  // console.log(location);
+  const { pathname } = location; //获取当前路由名称
+  const authority = user?.userInfo?.authority
+    ? JSON.parse(user.userInfo.authority)
+    : []; //获取用户权限配置
+  // authority;
   // 退出登录函数
   const handleLogout = () => {
     sessionStorage.clear();
@@ -65,34 +69,18 @@ const AppLayout = ({ user, dispatch }) => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
-          items={[
-            {
-              key: "1",
-              icon: <DatabaseOutlined />,
-              label: <Link to={"/dashboard"}>数据汇总</Link>,
-            },
-            {
-              key: "2",
-              icon: <UsergroupAddOutlined />,
-              label: <Link to={"/adminuser"}>管理员</Link>,
-            },
-            {
-              key: "3",
-              icon: <UserOutlined />,
-              label: <Link to={"/user"}>用户管理</Link>,
-            },
-            {
-              key: "4",
-              icon: <FileProtectOutlined />,
-              label: <Link to={"/product"}>商品管理</Link>,
-            },
-            {
-              key: "5",
-              icon: <SketchOutlined />,
-              label: <Link to={"/order"}>订单管理</Link>,
-            },
-          ]}
+          selectedKeys={[pathname]}
+          items={Object.keys(authority)
+            .filter((item) => authority[item].view)
+            .map(
+              (
+                item //根据权限配置显示menu
+              ) => ({
+                key: `/${item}`,
+                icon: <DatabaseOutlined />,
+                label: <Link to={`/${item}`}>{authority[item].title}</Link>,
+              })
+            )}
         />
       </Sider>
       <Layout className="site-layout">

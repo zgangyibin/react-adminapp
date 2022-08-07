@@ -8,6 +8,8 @@ import {
   Select,
   message,
   Popconfirm,
+  List,
+  Checkbox,
 } from "antd";
 import {
   getAdminUserList,
@@ -15,6 +17,8 @@ import {
   updateAdminUser,
   delAdminUser,
 } from "../../api/adminUserService";
+import { connect } from "react-redux";
+import { PAGEAUTH } from "../../config";
 import { Fragment, useEffect, useReducer, useState } from "react";
 import { formatDate } from "../../utils/tool";
 import React from "react";
@@ -23,35 +27,45 @@ const ROLEMAP = {
   1: { id: 1, text: "Admin" },
   2: { id: 2, text: "Normal" },
 };
+
+const initData = {
+  user: {},
+  type: "",
+  role: "1",
+  authority: JSON.parse(JSON.stringify(PAGEAUTH[1])),
+};
+
 //使用useReducer
 function reducer(state, action) {
-  const { type, payload } = action; //payload是dispatch触发reducer传递的参数
-  switch (type) {
-    case "edit":
-      return { ...state, user: payload, type };
-    case "add":
-      return { ...state, user: {}, type };
-    default:
-      return state;
+  if (action) {
+    return { ...state, ...action };
   }
+  return state;
 }
-const AdminUser = function () {
+const AdminUser = function ({ pageConfig }) {
   //hooks
   const [form] = Form.useForm(); //返回一个form对象，把form对象传递form表单的form属性，可以获取该form的实例
   const [data, setState] = useState([]);
-  const [state, dispatch] = useReducer(reducer, { user: {}, type: "" });
+  const [state, dispatch] = useReducer(reducer, initData); //reducer初始化数据
   // 根据state的type属性判断是添加管理员还是修改
   const [visible, setVisible] = useState(false);
   const onFinish = (values) => {
-    console.log(values);
+    // console.log(values);
     if (state.type === "add") {
       //添加管理员
-      addCreateAdminUser(values, () => {
-        //添加成功后重新获取管理员列表接口
-        message.success("添加成功");
-        setVisible(false);
-        init();
-      });
+      addCreateAdminUser(
+        {
+          ...values,
+          role: state.role,
+          authority: JSON.stringify(state.authority),
+        },
+        () => {
+          //添加成功后重新获取管理员列表接口
+          message.success("添加成功");
+          setVisible(false);
+          init();
+        }
+      );
     } else {
       //修改管理员信息,修改之前和原始数据比较，如果没有改变，不需要调修改接口
       const { user } = state;
@@ -62,10 +76,13 @@ const AdminUser = function () {
       ) {
         return;
       }
+      console.log(state);
       updateAdminUser(
         {
           ...values,
           id: state.user.id,
+          role: state.role,
+          authority: JSON.stringify(state.authority),
         },
         () => {
           message.success("修改成功");
@@ -95,11 +112,14 @@ const AdminUser = function () {
     console.log(form);
     form.setFieldsValue({
       username: row.username,
-      role: row.role,
       password: row.password,
-      authority: row.authority,
     });
-    dispatch({ type: "edit", payload: row });
+    dispatch({
+      user: row,
+      type: "edit",
+      role: row.role,
+      authority: row.authority ? JSON.parse(row.authority) : PAGEAUTH[row.role],
+    });
     setVisible(true);
   };
   //添加管理员
@@ -107,11 +127,9 @@ const AdminUser = function () {
     // 设置form表单的值
     form.setFieldsValue({
       username: "",
-      role: "",
       password: "",
-      authority: "",
     });
-    dispatch({ type: "add", payload: {} });
+    dispatch({ user: {}, type: "add", role: "1", authority: PAGEAUTH[1] });
     setVisible(true);
   };
   // 删除管理员
@@ -125,6 +143,13 @@ const AdminUser = function () {
         init();
       }
     );
+  };
+  //修改用户权限
+  const onChangeAuth = (item, key, e) => {
+    // item页面，key页面的操作名称，e当前CheckBox的对象
+    console.log(item, key, e);
+    state.authority[item][key] = e.target.checked;
+    dispatch({ authority: state.authority });
   };
   const columns = [
     {
@@ -141,10 +166,6 @@ const AdminUser = function () {
       render: (text) => ROLEMAP[text]?.text,
     },
     {
-      title: "权限",
-      dataIndex: "authority",
-    },
-    {
       title: "创建时间",
       dataIndex: "create_time",
       render: (text) => formatDate(text, "YYYY-MM-DD hh:mm:ss"),
@@ -158,19 +179,23 @@ const AdminUser = function () {
       ) => (
         <Fragment>
           <Space>
-            <Button onClick={() => handleEdit(row)} type="primary">
-              编辑
-            </Button>
-            <Popconfirm
-              title="确认删除？"
-              onConfirm={() => handleDel(row)}
-              okText="确认"
-              cancelText="取消"
-            >
-              <a href="#">
-                <Button type="danger">删除</Button>
-              </a>
-            </Popconfirm>
+            {pageConfig.edit && (
+              <Button onClick={() => handleEdit(row)} type="primary">
+                编辑
+              </Button>
+            )}
+            {pageConfig.delete && (
+              <Popconfirm
+                title="确认删除？"
+                onConfirm={() => handleDel(row)}
+                okText="确认"
+                cancelText="取消"
+              >
+                <a href="#">
+                  <Button type="danger">删除</Button>
+                </a>
+              </Popconfirm>
+            )}
           </Space>
         </Fragment>
       ),
@@ -179,7 +204,7 @@ const AdminUser = function () {
   return (
     <Fragment>
       <p>
-        <Button onClick={handleAddUser}>添加管理员</Button>
+        {pageConfig.add && <Button onClick={handleAddUser}>添加管理员</Button>}
       </p>
       <Table rowKey="id" columns={columns} dataSource={data} />
       <Modal
@@ -187,6 +212,7 @@ const AdminUser = function () {
         title={state.type === "add" ? "添加管理员" : "修改管理员信息"}
         visible={visible}
         footer={false}
+        width={1200}
       >
         <Form
           form={form}
@@ -197,22 +223,20 @@ const AdminUser = function () {
           onFinish={onFinish}
           autoComplete="off"
         >
-          {state.type === "add" && (
-            <Form.Item
-              labelCol={{ span: 6 }}
-              wrapperCol={{ span: 18 }}
-              label="用户名"
-              name="username"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your username!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-          )}
+          <Form.Item
+            labelCol={{ span: 6 }}
+            wrapperCol={{ span: 18 }}
+            label="用户名"
+            name="username"
+            rules={[
+              {
+                required: true,
+                message: "Please input your username!",
+              },
+            ]}
+          >
+            <Input disabled={state.type !== "add"} />
+          </Form.Item>
 
           <Form.Item
             labelCol={{ span: 6 }}
@@ -232,15 +256,17 @@ const AdminUser = function () {
             labelCol={{ span: 6 }}
             wrapperCol={{ span: 18 }}
             label="角色"
-            name="role"
-            rules={[
-              {
-                required: true,
-                message: "Please select!",
-              },
-            ]}
           >
-            <Select>
+            <Select
+              value={state.role}
+              onChange={(e) => {
+                //用户角色改变，默认权限也会改变
+                dispatch({
+                  role: e,
+                  authority: JSON.parse(JSON.stringify(PAGEAUTH[e])),
+                });
+              }}
+            >
               {Object.keys(ROLEMAP).map((key) => (
                 <Option key={ROLEMAP[key].id} value={String(ROLEMAP[key].id)}>
                   {ROLEMAP[key].text}
@@ -253,14 +279,29 @@ const AdminUser = function () {
             wrapperCol={{ span: 18 }}
             label="权限"
             name="authority"
-            rules={[
-              {
-                required: true,
-                message: "Please input your authority!",
-              },
-            ]}
           >
-            <Input />
+            <List
+              dataSource={Object.keys(state.authority)}
+              renderItem={(item) => (
+                <List.Item>
+                  <List.Item.Meta
+                    title={state.authority[item].title}
+                    description={Object.keys(state.authority[item]).map(
+                      (o) =>
+                        o !== "title" && (
+                          <Checkbox
+                            key={o}
+                            checked={state.authority[item][o]}
+                            onChange={(e) => onChangeAuth(item, o, e)}
+                          >
+                            {o}
+                          </Checkbox>
+                        )
+                    )}
+                  />
+                </List.Item>
+              )}
+            />
           </Form.Item>
 
           <Form.Item>
@@ -276,4 +317,8 @@ const AdminUser = function () {
   );
 };
 
-export default AdminUser;
+export default connect((state) => ({
+  pageConfig: state?.user?.userInfo.authority
+    ? JSON.parse(state?.user?.userInfo.authority).adminuser
+    : {},
+}))(AdminUser);

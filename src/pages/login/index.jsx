@@ -11,16 +11,29 @@ function Login({ dispatch }) {
     //点击form表单提交按钮触发的函数
     console.log("Success:", values);
     login(values, (res) => {
-      // console.log(res);
+      console.log(res);
       if (!res.token) {
         message.error("用户名或密码错误");
       } else {
         sessionStorage.setItem("token", res.token);
+        const userInfo = res.data[0].datas[0];
         dispatch({
           type: "SET_USER",
-          payload: res.data[0].datas[0],
+          payload: userInfo,
         });
-        navigate("/dashboard");
+        //跳转之前需要判断用户是否有dashboard访问权限，如果没有需要找一个能访问的页面跳转
+        let auth = JSON.parse(userInfo.authority);
+        let skipPage = "/dashboard";
+        if (!auth.dashboard.view) {
+          let keyArr = Object.keys(auth);
+          for (let i = 0; i < keyArr.length; i++) {
+            if (auth[keyArr[i]].view) {
+              skipPage = `/${keyArr[i]}`;
+              break;
+            }
+          }
+        }
+        navigate(skipPage);
       }
     });
   };
@@ -93,4 +106,4 @@ function Login({ dispatch }) {
 const mapDispatchToProps = (dispatch) => {
   return { dispatch };
 };
-export default connect(() => {}, mapDispatchToProps)(Login);
+export default connect(() => ({}), mapDispatchToProps)(Login);

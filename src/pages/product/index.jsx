@@ -18,6 +18,7 @@ import {
   updatepro,
   delPro,
 } from "../../api/proService";
+import { connect } from "react-redux";
 import { Fragment, useEffect, useReducer } from "react";
 import { formatDate } from "../../utils/tool";
 import { staticUrl } from "../../api/api";
@@ -47,7 +48,7 @@ function reducer(state, action) {
   }
   return state;
 }
-const Product = function () {
+const Product = function ({ pageConfig }) {
   //hooks
   const [form] = Form.useForm(); //返回一个form对象，把form对象传递form表单的form属性，可以获取该form的实例
   const [state, dispatch] = useReducer(reducer, initState);
@@ -280,19 +281,23 @@ const Product = function () {
       ) => (
         <Fragment>
           <Space>
-            <Button onClick={() => handleEdit(row)} type="primary">
-              编辑
-            </Button>
-            <Popconfirm
-              title="确认删除？"
-              onConfirm={() => handleDel(row)}
-              okText="确认"
-              cancelText="取消"
-            >
-              <a href="#">
-                <Button type="danger">删除</Button>
-              </a>
-            </Popconfirm>
+            {pageConfig.edit && (
+              <Button onClick={() => handleEdit(row)} type="primary">
+                编辑
+              </Button>
+            )}
+            {pageConfig.delete && (
+              <Popconfirm
+                title="确认删除？"
+                onConfirm={() => handleDel(row)}
+                okText="确认"
+                cancelText="取消"
+              >
+                <a href="#">
+                  <Button type="danger">删除</Button>
+                </a>
+              </Popconfirm>
+            )}
           </Space>
         </Fragment>
       ),
@@ -302,7 +307,7 @@ const Product = function () {
   return (
     <Fragment>
       <p>
-        <Button onClick={handleAddPro}>添加商品</Button>
+        {pageConfig.add && <Button onClick={handleAddPro}>添加商品</Button>}
       </p>
       <Table
         rowKey="id"
@@ -534,4 +539,8 @@ const Product = function () {
   );
 };
 
-export default Product;
+export default connect((state) => ({
+  pageConfig: state?.user?.userInfo.authority
+    ? JSON.parse(state?.user?.userInfo.authority).product
+    : {},
+}))(Product);

@@ -18,5 +18,6 @@ const api = {
   updatepro: `${url}/dapi/vapi/updatepro`, //更新商品
   delPro: `${url}/dapi/vapi/delPro`, //删除商品
   getOrderList: `${url}/dapi/vapi/getOrdersList`, //获取订单数据
+  updateOrders: `${url}/dapi/vapi/updateOrders`, //更新订单数据
 };
 export default api;

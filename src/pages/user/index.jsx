@@ -1,4 +1,5 @@
 import { Table, Modal, Image, Button, Input } from "antd";
+import { connect } from "react-redux";
 import { usersList, showUserPwd } from "../../api/userService";
 import { staticUrl } from "../../api/api";
 import { Fragment, useEffect, useReducer } from "react";
@@ -41,7 +42,7 @@ function reducer(state, action) {
   }
   return state;
 }
-const Users = function () {
+const Users = function ({ pageConfig }) {
   //hooks
   const [state, dispatch] = useReducer(reducer, initState);
   useEffect(
@@ -136,15 +137,16 @@ const Users = function () {
     {
       title: "创建时间",
       dataIndex: "id",
-      render: (text) => (
-        <Button
-          onClick={() => {
-            showPassWord(text);
-          }}
-        >
-          查看密码
-        </Button>
-      ),
+      render: (text) =>
+        pageConfig.edit && (
+          <Button
+            onClick={() => {
+              showPassWord(text);
+            }}
+          >
+            查看密码
+          </Button>
+        ),
     },
   ];
   return (
@@ -181,5 +183,8 @@ const Users = function () {
     </Fragment>
   );
 };
-
-export default Users;
+export default connect((state) => ({
+  pageConfig: state?.user?.userInfo.authority
+    ? JSON.parse(state?.user?.userInfo.authority).users
+    : {},
+}))(Users);
