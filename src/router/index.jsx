@@ -1,21 +1,21 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 //lazy可以实现分片打包（分模块），不用把所有js打包在同一文件，用到模块在加载对应的js文件，用户体验更好
-import { lazy } from "react";
+// import { lazy } from "react";
 import { connect } from "react-redux";
-// import Login from "../pages/login";
-const Login = lazy(() => import("../pages/login"));
-const AppLayout = lazy(() => import("../pages/layout"));
-const Dashboard = lazy(() => import("../pages/dashboard"));
-const AdminUser = lazy(() => import("../pages/adminUser"));
-const User = lazy(() => import("../pages/user"));
-const Product = lazy(() => import("../pages/product"));
-const Order = lazy(() => import("../pages/order"));
-// import AppLayout from "../pages/layout";
-// import Dashboard from "../pages/dashboard";
-// import AdminUser from "../pages/adminUser";
-// import User from "../pages/user";
-// import Product from "../pages/product";
-// import Order from "../pages/order";
+import Login from "../pages/login";
+// const Login = lazy(() => import("../pages/login"));
+// const AppLayout = lazy(() => import("../pages/layout"));
+// const Dashboard = lazy(() => import("../pages/dashboard"));
+// const AdminUser = lazy(() => import("../pages/adminUser"));
+// const User = lazy(() => import("../pages/user"));
+// const Product = lazy(() => import("../pages/product"));
+// const Order = lazy(() => import("../pages/order"));
+import AppLayout from "../pages/layout";
+import Dashboard from "../pages/dashboard";
+import AdminUser from "../pages/adminUser";
+import User from "../pages/user";
+import Product from "../pages/product";
+import Order from "../pages/order";
 
 const COMPONENT_MAP = {
   dashboard: Dashboard,
