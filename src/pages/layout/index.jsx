@@ -10,11 +10,12 @@ import { connect } from "react-redux";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import logo from "../../assets/logo.png";
+import { PAGEAUTH } from "../../config/index";
 import "./index.scss"; //导入的样式是全局的
 // import styles from "./index.module.scss"; //模块化导入样式文件，css样式是局部样式，样式名后面自动加随机值
 
 const { Header, Sider, Content } = Layout;
-
+let authority = PAGEAUTH[1];
 const AppLayout = ({ user, dispatch }) => {
   const [collapsed, setCollapsed] = useState(false);
   // console.log(user);
@@ -22,9 +23,9 @@ const AppLayout = ({ user, dispatch }) => {
   const location = useLocation();
   // console.log(location);
   const { pathname } = location; //获取当前路由名称
-  const authority = user?.userInfo?.authority
-    ? JSON.parse(user.userInfo.authority)
-    : []; //获取用户权限配置
+  // const authority = user?.userInfo?.authority
+  //   ? JSON.parse(user.userInfo.authority)
+  //   : []; //获取用户权限配置
   // authority;
   // 退出登录函数
   const handleLogout = () => {
@@ -70,17 +71,15 @@ const AppLayout = ({ user, dispatch }) => {
           theme="dark"
           mode="inline"
           selectedKeys={[pathname]}
-          items={Object.keys(authority)
-            .filter((item) => authority[item].view)
-            .map(
-              (
-                item //根据权限配置显示menu
-              ) => ({
-                key: `/${item}`,
-                icon: <DatabaseOutlined />,
-                label: <Link to={`/${item}`}>{authority[item].title}</Link>,
-              })
-            )}
+          items={Object.keys(authority).map(
+            (
+              item //根据权限配置显示menu
+            ) => ({
+              key: `/${item}`,
+              icon: <DatabaseOutlined />,
+              label: <Link to={`/${item}`}>{authority[item].title}</Link>,
+            })
+          )}
         />
       </Sider>
       <Layout className="site-layout">
