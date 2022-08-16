@@ -29,8 +29,10 @@
   }
 }
 @font-face {
-  font-family: "iconfont";
-  src: url("../../assets/font/iconfont.ttf") format("truetype");
+  font-family: 'iconfont';  /* Project id 3589542 */
+  src: url('//at.alicdn.com/t/c/font_3589542_jhh48sl7k9r.woff2?t=1660549936316') format('woff2'),
+       url('//at.alicdn.com/t/c/font_3589542_jhh48sl7k9r.woff?t=1660549936316') format('woff'),
+       url('//at.alicdn.com/t/c/font_3589542_jhh48sl7k9r.ttf?t=1660549936316') format('truetype');
 }
 
 .iconfont {
@@ -41,6 +43,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 .icon-jiazai:before {
-  content: "\e684";
+  content: "\e699";
 }
 
