@@ -135,7 +135,7 @@ const Users = function ({ pageConfig }) {
       render: (text) => formatDate(text, "YYYY-MM-DD hh:mm:ss"),
     },
     {
-      title: "创建时间",
+      title: "查看密码",
       dataIndex: "id",
       render: (text) =>
         pageConfig.edit && (
