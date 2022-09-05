@@ -152,8 +152,15 @@ const Order = function ({ pageConfig }) {
       title: "收货地址",
       dataIndex: "address",
       render(text) {
-        text = JSON.parse(text);
-        return text.name + "," + text.tel + "," + text.address;
+        if (typeof text == "string") {
+          try {
+            text = JSON.parse(text);
+            console.log(text);
+            return text.name + "," + text.tel + "," + text.address;
+          } catch {
+            return text;
+          }
+        }
       },
     },
     {
