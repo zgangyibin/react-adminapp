@@ -17,13 +17,6 @@ function MyEditor({ handleChangeEditor, htmlContent }) {
   // 编辑器内容
   const [html, setHtml] = useState("");
 
-  // 模拟 ajax 请求，异步设置 html
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setHtml("<p>hello world</p>");
-  //   }, 1500);
-  // }, []);
-
   // 工具栏配置
   const toolbarConfig = {}; // JS 语法
 
@@ -48,7 +41,6 @@ function MyEditor({ handleChangeEditor, htmlContent }) {
         // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
         allowedFileTypes: ["image/*"],
         customInsert(res, insertFn) {
-          // JS 语法
           // res 即服务端的返回结果
 
           // 从 res 中找到 url alt href ，然后插图图片
