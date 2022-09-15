@@ -161,9 +161,8 @@ const AdminUser = function ({ pageConfig }) {
       dataIndex: "username",
     },
     {
-      title: "角色",
-      dataIndex: "role",
-      render: (text) => ROLEMAP[text]?.text,
+      title: "昵称",
+      dataIndex: "nick",
     },
     {
       title: "创建时间",

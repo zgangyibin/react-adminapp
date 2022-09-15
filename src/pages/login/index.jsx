@@ -25,7 +25,7 @@ function Login({ dispatch }) {
           payload: userInfo,
         });
         //跳转之前需要判断用户是否有dashboard访问权限，如果没有需要找一个能访问的页面跳转
-        // let auth = JSON.parse(userInfo.authority);
+        // let auth = userInfo.authority ? JSON.parse(userInfo.authority) : {};
         let skipPage = "/dashboard";
         // if (!auth.dashboard.view) {
         //   let keyArr = Object.keys(auth);

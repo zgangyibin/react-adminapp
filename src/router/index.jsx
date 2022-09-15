@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 //lazy可以实现分片打包（分模块），不用把所有js打包在同一文件，用到模块在加载对应的js文件，用户体验更好
 import { lazy } from "react";
 import { PAGEAUTH } from "../config/index";
-import { connect } from "react-redux";
 import Login from "../pages/login";
 // const Login = lazy(() => import("../pages/login"));
 // const AppLayout = lazy(() => import("../pages/layout"));
@@ -39,7 +38,7 @@ function Router() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<AppLayout />}>
           {/*动态路由渲染，根据权限配置显示对应的路由*/}
-          {Object.keys(PAGEAUTH[1]).map((item) => (
+          {Object.keys(COMPONENT_MAP).map((item) => (
             <Route
               key={item}
               path={item}
