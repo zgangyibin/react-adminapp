@@ -109,26 +109,14 @@ const Product = function () {
   };
   //编辑
   const handleEdit = (row) => {
-    // 根据分类id找父类id
-    const { typeid } = row;
-    let fatherid = state.proType[typeid].fatherid;
-    let mainId = "1";
-    let keyArr = Object.keys(state.proType);
-    for (let i = 0; i < keyArr.length; i++) {
-      if (fatherid.includes(keyArr[i])) {
-        mainId = Number(keyArr[i]);
-      }
-    }
     getDetail({ id: row.id }, (res) => {
       //博客详情需要调用接口返回
-      dispatch({ html: res.data[0].data[0].detail });
+      dispatch({ html: res.content });
     });
     // 设置state的imgList，把主图传入uploading组件
     dispatch({
       type: "edit",
-      payload: row,
       visible: true,
-      mainId,
       imgList: row.img.split(","),
       html: "",
       selectProData: { id: row.id },
@@ -150,7 +138,7 @@ const Product = function () {
       description: "",
       content: "",
       showBlog: 1,
-      blogType: 0,
+      blogType: "技术博客",
     });
     dispatch({
       visible: true,
@@ -166,7 +154,7 @@ const Product = function () {
     let imgArr = row.img.split(",");
     getDetail({ id: row.id }, (res) => {
       //博客详情需要调用接口返回
-      const { detail } = res.data[0].data[0];
+      const { detail } = res.content;
       console.log(detail);
       let reg =
         /(?<=\<img src="https:\/\/8i98.com\/apidoc\/)vapi\/\d+\/[\w-]+\.[a-z]+(?=" alt="" data-href="" style=""\>)/g; // 找出详情里面的所有图片的正则
@@ -187,10 +175,6 @@ const Product = function () {
   const handleChangeEditor = (html) => {
     dispatch({ html });
   };
-  //主分类切换
-  const handleMainTypeChange = (value) => {
-    dispatch({ mainId: value });
-  };
   // upload子组件图片需要放到state的imgList里面（子传父）
   const handleUploadChange = (imgList) => {
     dispatch({ imgList });
@@ -202,17 +186,15 @@ const Product = function () {
     },
     {
       title: "封面图",
-      dataIndex: "img",
+      dataIndex: "cover",
       render(text) {
-        var arr = text.split(",");
-        return arr.map((item) => (
+        return (
           <Image
-            key={item}
             preview={false}
-            src={`${staticUrl}/apidoc/${item}`}
+            src={`${staticUrl}/static//blogimg/${text}`}
             style={{ width: 50 }}
           />
-        ));
+        );
       },
     },
     {
@@ -233,8 +215,7 @@ const Product = function () {
     },
     {
       title: "分类",
-      dataIndex: "typeid",
-      render: (text) => state.proType[text]?.title,
+      dataIndex: "blogType",
     },
     {
       title: "创建时间",
@@ -367,7 +348,7 @@ const Product = function () {
           >
             <Select>
               {typeList.map((item) => (
-                <Option key={item.id} value={item.id}>
+                <Option key={item.id} value={item.type}>
                   {item.type}
                 </Option>
               ))}

@@ -8,7 +8,7 @@ export const PAGEAUTH = {
       edit: false,
       delete: false,
     },
-    users: { title: "用户管理", view: false, edit: false },
+    // users: { title: "用户管理", view: false, edit: false },
     blog: {
       title: "博客管理",
       view: true,
@@ -16,7 +16,7 @@ export const PAGEAUTH = {
       edit: false,
       delete: false,
     },
-    order: { title: "订单管理", view: true, edit: false },
+    // order: { title: "订单管理", view: true, edit: false },
   },
   1: {
     dashboard: { title: "数据汇总", view: true },
@@ -27,7 +27,7 @@ export const PAGEAUTH = {
       edit: true,
       delete: true,
     },
-    users: { title: "用户管理", view: true, edit: true },
+    // users: { title: "用户管理", view: true, edit: true },
     blog: {
       title: "博客管理",
       view: true,
@@ -35,6 +35,6 @@ export const PAGEAUTH = {
       edit: true,
       delete: true,
     },
-    order: { title: "订单管理", view: true, edit: true },
+    // order: { title: "订单管理", view: true, edit: true },
   },
 };
