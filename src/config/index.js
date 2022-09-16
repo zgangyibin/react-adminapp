@@ -9,8 +9,8 @@ export const PAGEAUTH = {
       delete: false,
     },
     users: { title: "用户管理", view: false, edit: false },
-    product: {
-      title: "商品管理",
+    blog: {
+      title: "博客管理",
       view: true,
       add: false,
       edit: false,
@@ -28,8 +28,8 @@ export const PAGEAUTH = {
       delete: true,
     },
     users: { title: "用户管理", view: true, edit: true },
-    product: {
-      title: "商品管理",
+    blog: {
+      title: "博客管理",
       view: true,
       add: true,
       edit: true,

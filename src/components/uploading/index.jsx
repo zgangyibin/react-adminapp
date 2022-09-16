@@ -11,7 +11,7 @@ const Uploading = ({ ImgChange, imgList }) => {
     function () {
       setFileList(
         imgList.map((url) => ({
-          url: `${staticUrl}/apidoc/${url}`,
+          url: `${staticUrl}/static/blogimg/${url}`,
           name: url,
           status: "done",
         }))
@@ -65,19 +65,19 @@ const Uploading = ({ ImgChange, imgList }) => {
   };
 
   return (
-    <ImgCrop rotate>
+    <ImgCrop rotate aspect={234 / 166}>
       <Upload
         action={api.adddetailimg}
         headers={{ Authorization: sessionStorage.getItem("token") }}
         listType="picture-card"
         fileList={fileList}
-        maxCount={5}
+        maxCount={1}
         name="file"
         onChange={onChange}
         onRemove={onRemove}
         onPreview={onPreview}
       >
-        {fileList.length < 5 && "+ Upload"}
+        {fileList.length < 1 && "+ Upload"}
       </Upload>
     </ImgCrop>
   );

@@ -53,7 +53,7 @@ function MyEditor({ handleChangeEditor, htmlContent }) {
 
           // 从 res 中找到 url alt href ，然后插图图片
           const { url } = res.data;
-          insertFn(`${staticUrl}/apidoc/${url}`, "", "");
+          insertFn(`${staticUrl}/static/blogimg/${url}`, "", "");
         },
       },
     },

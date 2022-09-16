@@ -9,15 +9,12 @@ const api = {
   delAdminUser: `${url}/api/delAdminUser`, //删除管理员
   usersList: `${url}/api/usersList`, //用户列表
   showUserPwd: `${url}/api/showUserPwd`, //查看用户密码
-  getPro: `${url}/api/getPro`, //获取商品
-  addPro: `${url}/api/addPro`, //添加商品
-  getAllProType: `${url}/api/getAllProType`, //获取商品分类
+  getPro: `${url}/api/getBlogList`, //获取博客
+  addPro: `${url}/api/addBlog`, //添加博客
   adddetailimg: `${url}/api/adddetailimg`, //上传文件
   deldetailimg: `${url}/api/deldetailimg`, //删除文件
-  getDetail: `${url}/api/getDetail`, //获取商品详情
-  updatepro: `${url}/api/updatepro`, //更新商品
-  delPro: `${url}/api/delPro`, //删除商品
-  getOrderList: `${url}/api/getOrdersList`, //获取订单数据
-  updateOrders: `${url}/api/updateOrders`, //更新订单数据
+  getDetail: `${url}/api/getDetail`, //获取博客详情
+  updatepro: `${url}/api/updateBlog`, //更新博客
+  delPro: `${url}/api/delBlog`, //删除博客
 };
 export default api;
