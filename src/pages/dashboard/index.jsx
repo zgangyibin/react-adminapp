@@ -24,10 +24,10 @@ function Dashboard() {
     }
     getDashboardData(function (res) {
       console.log(res);
-      const chartData = res.data[0].data;
+      const chartData = res.data[2];
       var chartMap = {};
       chartData.forEach(function (o) {
-        let date = formatDate(o.createtime, "YYYY-MM-DD");
+        let date = o.createTime.slice(0, 10);
         if (!chartMap[date]) {
           chartMap[date] = 1;
         } else {
@@ -37,9 +37,8 @@ function Dashboard() {
       // console.log(chartMap);
       setEchartData(chartMap); //echart数据
       setData({
-        userCount: res.data[1].data[0].total,
-        money: res.data[2].data[0].total.toFixed(2),
-        proCount: res.data[3].data[0].total.toFixed(2),
+        userCount: res.data[1][0].total,
+        money: res.data[0][0].total,
       });
     });
   }, []); //模拟mounted
@@ -49,7 +48,7 @@ function Dashboard() {
     // 绘制图表
     const option = {
       title: {
-        text: "订单数量",
+        text: "博客数量",
         left: "45%",
       },
       xAxis: {
@@ -96,7 +95,7 @@ function Dashboard() {
           <Col span={8}>
             <Card>
               <Statistic
-                title="总销售额"
+                title="博客数量"
                 value={data.money}
                 precision={2}
                 valueStyle={{
@@ -104,20 +103,6 @@ function Dashboard() {
                 }}
                 prefix={<MoneyCollectOutlined />}
                 suffix="元"
-              />
-            </Card>
-          </Col>
-          <Col span={8}>
-            <Card>
-              <Statistic
-                title="在线商品"
-                value={data.proCount}
-                precision={2}
-                valueStyle={{
-                  color: "#3f8600",
-                }}
-                prefix={<AppstoreOutlined />}
-                suffix="件"
               />
             </Card>
           </Col>

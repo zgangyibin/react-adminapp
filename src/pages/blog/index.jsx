@@ -8,7 +8,6 @@ import {
   Select,
   message,
   Popconfirm,
-  InputNumber,
   Image,
 } from "antd";
 import {
@@ -18,9 +17,7 @@ import {
   updatepro,
   delPro,
 } from "../../api/proService";
-import { connect } from "react-redux";
 import { Fragment, useEffect, useReducer } from "react";
-import { formatDate } from "../../utils/tool";
 import { staticUrl } from "../../api/api";
 import { deldetailimg } from "../../api/otherService";
 import Uploading from "../../components/uploading";
@@ -111,13 +108,13 @@ const Product = function () {
   const handleEdit = (row) => {
     getDetail({ id: row.id }, (res) => {
       //博客详情需要调用接口返回
-      dispatch({ html: res.content });
+      dispatch({ html: res.data.content });
     });
     // 设置state的imgList，把主图传入uploading组件
     dispatch({
       type: "edit",
       visible: true,
-      imgList: row.img.split(","),
+      imgList: [row.cover],
       html: "",
       selectProData: { id: row.id },
     });
@@ -137,7 +134,7 @@ const Product = function () {
       keywords: "",
       description: "",
       content: "",
-      showBlog: 1,
+      showBlog: "1",
       blogType: "技术博客",
     });
     dispatch({
@@ -151,13 +148,14 @@ const Product = function () {
   // 删除博客
   const handleDel = (row) => {
     // 删除博客之前需要删除该博客的所有图片,主图和详情图
-    let imgArr = row.img.split(",");
+    let imgArr = [row.cover];
     getDetail({ id: row.id }, (res) => {
       //博客详情需要调用接口返回
-      const { detail } = res.content;
+      // console.log(res);
+      const detail = res.data.content;
       console.log(detail);
       let reg =
-        /(?<=\<img src="https:\/\/8i98.com\/apidoc\/)vapi\/\d+\/[\w-]+\.[a-z]+(?=" alt="" data-href="" style=""\>)/g; // 找出详情里面的所有图片的正则
+        /(?<=\<img src="http:\/\/localhost\:8081\/static\/)blogimg\/[\s\S]*\.[a-z]+(?=" alt="" data-href="" style="[\s\S]*"\>)/g; // 找出详情里面的所有图片的正则
       let imgs = detail.match(reg) || [];
       deldetailimg(
         {
@@ -219,8 +217,8 @@ const Product = function () {
     },
     {
       title: "创建时间",
-      dataIndex: "create_time",
-      render: (text) => formatDate(text, "YYYY-MM-DD hh:mm:ss"),
+      dataIndex: "createTime",
+      render: (text) => text.slice(0, 10),
     },
     {
       title: "编辑",
@@ -330,8 +328,8 @@ const Product = function () {
             ]}
           >
             <Select>
-              <Option value={1}>显示文章</Option>
-              <Option value={0}>隐藏文章</Option>
+              <Option value="1">显示文章</Option>
+              <Option value="0">隐藏文章</Option>
             </Select>
           </Form.Item>
           <Form.Item
